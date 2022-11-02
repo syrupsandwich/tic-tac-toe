@@ -1,0 +1,19 @@
+body{
+  margin: 0;
+  display: grid;
+  grid-template: 1fr 200px 1fr / 1fr 200px 1fr;
+  height: 100vh;
+  background-color: hsl(0, 0%, 10%);
+}
+
+div.grid{
+  grid-area: 2 / 2 / 3 / 3;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 4px;
+  background-color: white;
+}
+
+.grid>div{
+  background-color: hsl(0, 0%, 10%);
+}
