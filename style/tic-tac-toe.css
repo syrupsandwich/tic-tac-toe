@@ -16,4 +16,7 @@ div.grid{
 
 .grid>div{
   background-color: hsl(0, 0%, 10%);
+  color: white;
+  font-size: 50px;
+  text-align: center;
 }
