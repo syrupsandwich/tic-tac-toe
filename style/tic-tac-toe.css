@@ -1,22 +1,50 @@
 body{
   margin: 0;
   display: grid;
-  grid-template: 1fr 200px 1fr / 1fr 200px 1fr;
+  grid-template: 1fr 300px 200px 1fr / 1fr 300px 1fr;
   height: 100vh;
   background-color: hsl(0, 0%, 10%);
+  color: white;
+  font-size: 20px;
+  padding: 40px;
 }
 
 div.grid{
+  --grid-dimension : 3;
   grid-area: 2 / 2 / 3 / 3;
   display: grid;
-  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  grid-template: repeat(var(--grid-dimension), 1fr) / repeat(var(--grid-dimension), 1fr);
   gap: 4px;
   background-color: white;
+  font-size: 70px;
 }
 
 .grid>div{
   background-color: hsl(0, 0%, 10%);
-  color: white;
-  font-size: 50px;
+  font-size: calc(300% / var(--grid-dimension));
   text-align: center;
+}
+
+.options{
+  border: 1px solid gray;
+  grid-area: 3 / 2 / 4 / 3;
+  position: relative;
+  --opt-box-width: 400px;
+  width: var(--opt-box-width);
+  height: calc(var(--opt-box-width) / 3);
+  left: calc(50% - var(--opt-box-width) / 2);
+  margin-top: 40px;
+  color: lavender;
+}
+
+input{
+  opacity: 70%;
+  width: 220px;
+}
+
+form>span{
+  display: flex;
+  gap: 10px;
+  padding: 8px 10px 0 10px;
+  justify-content: center;
 }

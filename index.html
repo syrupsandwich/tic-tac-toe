@@ -10,6 +10,26 @@
 <body>
 
   <div class="grid"></div>
+  <div class="options">
+    <form action="" method="post">
+      <span>
+        <output class="price-output" for="price"></output>
+        <label for="total-cells">grid</label>
+        <input type="range" name="total-cells" id="total-cells" list="tickmarks" min="3" max="9" value="3">
+        <datalist id="tickmarks">
+          <option value="3"></option>
+          <option value="4"></option>
+          <option value="5"></option>
+          <option value="6"></option>
+          <option value="7"></option>
+          <option value="8"></option>
+          <option value="9"></option>
+          </option>
+        </datalist>
+        <button type="button" class="reset">reset</button>
+      </span>
+    </form>
+  </div>
   
 </body>
 <script src="./program/tic-tac-toe.js" defer></script>
