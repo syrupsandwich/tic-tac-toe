@@ -50,16 +50,35 @@ const gameboard = (() => {
 
   };
   resetGrid();
+  let winningNumber = 3;
+  const checkPatterns = (attribute, id, marker) => {
+    let group = allCells[id].getAttribute(`${attribute}`);
+    let attributeSelection = `[${attribute}='${group}']`;
+    let cells = Array.from(document.querySelectorAll(attributeSelection));
+    let points = 0;
+    cells.forEach((cell) => {
+      if (cell.textContent === marker){ points++ };
+      if (cell.textContent !== marker){ points = 0 };
+      if (points === winningNumber){ 
+        console.log('winner :D');
+        return;
+      };
+    });
+  };
 
   const markCell = (id, marker) => {
     allCells[id].textContent = marker;
+    checkPatterns('data-row', id, marker);
+    checkPatterns('data-column', id, marker);
+    checkPatterns('data-diagonal1', id, marker);
+    checkPatterns('data-diagonal2', id, marker);
   };
   
   const endTurn = () => {
     if (player2.automated){
     let options = [];
     allCells.forEach((cell)=>{
-      if (cell.textContent === '' && cell.id !== '') {
+      if (cell.textContent === '' && cell.id !== ''){
         options.push(cell.id) }
       });
     player2.move(options);
@@ -70,19 +89,19 @@ const gameboard = (() => {
   const output = document.querySelector('output');
   const resetBtn = document.querySelector('.reset');
 
-  resetBtn.addEventListener('click', function() {
+  resetBtn.addEventListener('click', function(){
     resetGrid(output.value.charAt(0));
   });
 
-  function setDefaultState() {
+  function setDefaultState(){
     output.value = `${rangeInput.value} * ${rangeInput.value}`;
   };
   
-  rangeInput.addEventListener('input', function() {
+  rangeInput.addEventListener('input', function(){
     output.value = `${this.value} x ${this.value}`;
   });
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function(){
     setDefaultState();
   });
 
@@ -91,8 +110,8 @@ const gameboard = (() => {
 
 const player = (mark, isBot = false) => {
   gameboard.grid.addEventListener('click', (e) => {
-    if (e.target.parentNode !== gameboard.grid) { return };
-    if (e.target.textContent !== '') { return };
+    if (e.target.parentNode !== gameboard.grid){ return };
+    if (e.target.textContent !== ''){ return };
     gameboard.markCell(e.target.id, player1.marker);
     gameboard.endTurn();
   });
