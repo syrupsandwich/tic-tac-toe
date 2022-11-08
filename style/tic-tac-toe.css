@@ -1,50 +1,80 @@
 body{
   margin: 0;
   display: grid;
-  grid-template: 1fr 300px 200px 1fr / 1fr 300px 1fr;
+  grid-template: auto / 1fr auto 1fr;
   height: 100vh;
   background-color: hsl(0, 0%, 10%);
   color: white;
   font-size: 20px;
-  padding: 40px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.scoreboard{
+  --scoreboard-width: 400px;
+  width: var(--scoreboard-width);
+}
+
+.scoreboard>span{
+  border: 1px solid gray;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px 0 20px;
+}
+
+.gameboard{
+  grid-area: 1 / 2 / 2 / 3;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
 }
 
 div.grid{
+  --gameboard-size: 200px;
   --grid-dimension : 3;
-  grid-area: 2 / 2 / 3 / 3;
-  display: grid;
+  width: var(--gameboard-size);
+  height: var(--gameboard-size);
   grid-template: repeat(var(--grid-dimension), 1fr) / repeat(var(--grid-dimension), 1fr);
-  gap: 4px;
+  display: grid;
+  gap: calc(var(--gameboard-size) / var(--grid-dimension) / 10);
   background-color: white;
-  font-size: 70px;
+  font-size: calc(var(--gameboard-size) / 4);
+  font-weight: 900;
 }
 
 .grid>div{
   background-color: hsl(0, 0%, 10%);
   font-size: calc(300% / var(--grid-dimension));
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .options{
   border: 1px solid gray;
-  grid-area: 3 / 2 / 4 / 3;
-  position: relative;
   --opt-box-width: 400px;
   width: var(--opt-box-width);
-  height: calc(var(--opt-box-width) / 3);
-  left: calc(50% - var(--opt-box-width) / 2);
-  margin-top: 40px;
   color: lavender;
 }
 
 input{
   opacity: 70%;
-  width: 220px;
+  width: 210px;
+}
+
+button.reset{
+  color: lavender;
+  background-color: transparent;
+  border: 1px solid lavender;
+  border-radius: 3px;
+  font-size: 16px;
 }
 
 form>span{
   display: flex;
   gap: 10px;
-  padding: 8px 10px 0 10px;
+  padding: 18px 10px 18px 10px;
   justify-content: center;
 }
