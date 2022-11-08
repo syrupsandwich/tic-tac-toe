@@ -17,10 +17,34 @@ const gameboard = (() => {
         element.remove();
       });
     }
-    
-    requiredCells = dimension * dimension;
+
+    assignRowNumber = (i) => {
+        let number = Math.floor(i / dimension);
+        allCells[i].setAttribute('data-row', number);
+    };
+
+    assignColNumber = (i) => {
+      let number = (i -(dimension * (Math.floor(i / dimension))));
+      allCells[i].setAttribute('data-column', number);
+    };
+
+    assignDiagonal1 = (i) => {
+      let number = +allCells[i].getAttribute('data-column') - +allCells[i].getAttribute('data-row');
+      allCells[i].setAttribute('data-diagonal1', number);
+    };
+
+    assignDiagonal2 = (i) => {
+      let number = +allCells[i].getAttribute('data-column') + +allCells[i].getAttribute('data-row');
+      allCells[i].setAttribute('data-diagonal2', number);
+    };
+
+    requiredCells = (dimension * dimension);
     for(let i = 0; i < requiredCells; ++i){
       allCells[i].id = i;
+      assignRowNumber(i);
+      assignColNumber(i);
+      assignDiagonal1(i);
+      assignDiagonal2(i);
       grid.appendChild(allCells[i]);
     }
 
