@@ -50,12 +50,14 @@ const gameboard = (() => {
 
   };
   resetGrid();
+  let gameOver = false;
   
   const highlightPattern = (cells) => {
     cells.forEach((cell) => { cell.classList.add('highlight-row') });
   };
 
   let winningNumber = 3;
+
   const checkPatterns = (attribute, id, marker) => {
     let group = allCells[id].getAttribute(`${attribute}`);
     let attributeSelection = `[${attribute}='${group}']`;
@@ -63,17 +65,18 @@ const gameboard = (() => {
     let points = 0;
     let pattern = [];
     cells.forEach((cell) => {
-      if (cell.textContent === marker){ 
+      if(cell.textContent === marker){ 
         points++;
         pattern.push(cell);
       };
-      if (cell.textContent !== marker || cell.className === 'highlight-row'){
+      if(cell.textContent !== marker || cell.className === 'highlight-row'){
         points = 0;
         pattern = [];
       };
-      if (points === winningNumber){ 
+      if(points === winningNumber){ 
         highlightPattern(pattern);
         rewardPlayer(marker);
+        gameOver = true;
         return;
       };
     });
@@ -83,17 +86,18 @@ const gameboard = (() => {
   const p2Score = document.querySelector('.p2-score');
   
   const rewardPlayer = (marker) => {
-    if( marker === player1.marker ){
+    if(marker === player1.marker){
       player1.point();
       p1Score.textContent = player1.getScore();
     };
-    if( marker === player2.marker ){
+    if(marker === player2.marker){
       player2.point();
       p2Score.textContent = player2.getScore();
     };
   };
 
   const markCell = (id, marker) => {
+    if(gameOver){ return };
     allCells[id].textContent = marker;
     checkPatterns('data-row', id, marker);
     checkPatterns('data-column', id, marker);
@@ -102,10 +106,10 @@ const gameboard = (() => {
   };
   
   const endTurn = () => {
-    if (player2.automated){
+    if(player2.automated){
     let options = [];
     allCells.forEach((cell)=>{
-      if (cell.textContent === '' && cell.id !== ''){
+      if(cell.textContent === '' && cell.id !== ''){
         options.push(cell.id) }
       });
     player2.move(options);
@@ -118,6 +122,7 @@ const gameboard = (() => {
 
   resetBtn.addEventListener('click', function(){
     resetGrid(output.value.charAt(0));
+    gameOver = false;
   });
 
   function setDefaultState(){
@@ -137,8 +142,8 @@ const gameboard = (() => {
 
 const player = (mark, isBot = false) => {
   gameboard.grid.addEventListener('click', (e) => {
-    if (e.target.parentNode !== gameboard.grid){ return };
-    if (e.target.textContent !== ''){ return };
+    if(e.target.parentNode !== gameboard.grid){ return };
+    if(e.target.textContent !== ''){ return };
     gameboard.markCell(e.target.id, player1.marker);
     gameboard.endTurn();
   });
@@ -154,7 +159,7 @@ const player = (mark, isBot = false) => {
   if(automated){
     const getRandomInt = (max) => { return Math.floor(Math.random() * max) };
     const move = (options) => {
-      if (options.length === 0){ return };
+      if(options.length === 0){ return };
       let randomId = getRandomInt(options.length);
       gameboard.markCell(options[randomId], player2.marker);
     }
