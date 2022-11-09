@@ -172,9 +172,11 @@ const player = (mark, isBot = false) => {
 if(!sessionStorage.player1Marker){
 sessionStorage.setItem('player1Marker', prompt('Player 1, input your marker.', 'x').toUpperCase());
 }
+document.querySelector('.p1-marker').textContent = sessionStorage.player1Marker;
 const player1 = player(sessionStorage.player1Marker);
 
 if(!sessionStorage.player2Marker){
   sessionStorage.setItem('player2Marker', prompt('Player 2, input your marker.', 'o').toUpperCase());
-  }
+}
+document.querySelector('.p2-marker').textContent = sessionStorage.player2Marker;
 const player2 = player(sessionStorage.player2Marker, true);

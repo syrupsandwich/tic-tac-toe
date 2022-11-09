@@ -20,6 +20,11 @@ body{
   justify-content: space-between;
   padding: 0 20px 0 20px;
 }
+.score{
+  display: flex;
+  flex-direction: row;
+  letter-spacing: 10px;
+}
 
 .gameboard{
   grid-area: 1 / 2 / 2 / 3;
