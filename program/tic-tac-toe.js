@@ -50,20 +50,47 @@ const gameboard = (() => {
 
   };
   resetGrid();
+  
+  const highlightPattern = (cells) => {
+    cells.forEach((cell) => { cell.classList.add('highlight-row') });
+  };
+
   let winningNumber = 3;
   const checkPatterns = (attribute, id, marker) => {
     let group = allCells[id].getAttribute(`${attribute}`);
     let attributeSelection = `[${attribute}='${group}']`;
     let cells = Array.from(document.querySelectorAll(attributeSelection));
     let points = 0;
+    let pattern = [];
     cells.forEach((cell) => {
-      if (cell.textContent === marker){ points++ };
-      if (cell.textContent !== marker){ points = 0 };
+      if (cell.textContent === marker){ 
+        points++;
+        pattern.push(cell);
+      };
+      if (cell.textContent !== marker || cell.className === 'highlight-row'){
+        points = 0;
+        pattern = [];
+      };
       if (points === winningNumber){ 
-        console.log('winner :D');
+        highlightPattern(pattern);
+        rewardPlayer(marker);
         return;
       };
     });
+  };
+
+  const p1Score = document.querySelector('.p1-score');
+  const p2Score = document.querySelector('.p2-score');
+  
+  const rewardPlayer = (marker) => {
+    if( marker === player1.marker ){
+      player1.point();
+      p1Score.textContent = player1.getScore();
+    };
+    if( marker === player2.marker ){
+      player2.point();
+      p2Score.textContent = player2.getScore();
+    };
   };
 
   const markCell = (id, marker) => {
@@ -119,6 +146,10 @@ const player = (mark, isBot = false) => {
   let marker = mark.charAt(0);
   let score = 0;
 
+  const getScore = () => { return score };
+
+  const point = () => { score++ };
+
   const automated = isBot;
   if(automated){
     const getRandomInt = (max) => { return Math.floor(Math.random() * max) };
@@ -127,10 +158,10 @@ const player = (mark, isBot = false) => {
       let randomId = getRandomInt(options.length);
       gameboard.markCell(options[randomId], player2.marker);
     }
-    return { marker, score, move, automated};
+    return { marker, point, move, automated, getScore };
   }
 
-  return { marker, score };
+  return { marker, point, getScore };
 };
 
 if(!sessionStorage.player1Marker){
