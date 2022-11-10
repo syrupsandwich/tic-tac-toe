@@ -105,6 +105,9 @@ const gameboard = (() => {
     checkPatterns('data-diagonal2', id, marker);
   };
   
+  const p1Label = document.querySelector('.p1-marker');
+  const p2Label = document.querySelector('.p2-marker');
+
   const endTurn = () => {
     if(player2.automated){
     let options = [];
@@ -113,15 +116,29 @@ const gameboard = (() => {
         options.push(cell.id) }
       });
     player2.move(options);
+    } else {
+      if(nextMarkToPlay === player1.marker){
+        nextMarkToPlay = player2.marker;
+        p2Label.classList.add('highlight');
+        p1Label.classList.remove('highlight');
+      } else if(nextMarkToPlay === player2.marker){
+        nextMarkToPlay = player1.marker;
+        p1Label.classList.add('highlight');
+        p2Label.classList.remove('highlight');
+      };
     }
   }
 
   const rangeInput = document.querySelector('input');
   const output = document.querySelector('output');
   const resetBtn = document.querySelector('.reset');
+  const playVsComInput = document.querySelector('#compete-vs-computer');
+  const playVsP2Input = document.querySelector('#compete-vs-player');
 
   resetBtn.addEventListener('click', function(){
     resetGrid(output.value.charAt(0));
+    if(playVsComInput.checked){ player2.automated = true };
+    if(playVsP2Input.checked){ player2.automated = false };
     gameOver = false;
   });
 
@@ -137,16 +154,19 @@ const gameboard = (() => {
     setDefaultState();
   });
 
+  let nextMarkToPlay = sessionStorage.player1Marker;
+
+  grid.addEventListener('click', (e) => {
+    if(e.target.parentNode !== gameboard.grid){ return };
+    if(e.target.textContent !== ''){ return };
+    gameboard.markCell(e.target.id, nextMarkToPlay);
+    gameboard.endTurn();
+  });
+
   return { grid, markCell, endTurn};
 })();
 
-const player = (mark, isBot = false) => {
-  gameboard.grid.addEventListener('click', (e) => {
-    if(e.target.parentNode !== gameboard.grid){ return };
-    if(e.target.textContent !== ''){ return };
-    gameboard.markCell(e.target.id, player1.marker);
-    gameboard.endTurn();
-  });
+const player = (mark, automated = false) => {
 
   let marker = mark.charAt(0);
   let score = 0;
@@ -155,7 +175,6 @@ const player = (mark, isBot = false) => {
 
   const point = () => { score++ };
 
-  const automated = isBot;
   if(automated){
     const getRandomInt = (max) => { return Math.floor(Math.random() * max) };
     const move = (options) => {
