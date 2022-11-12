@@ -12,21 +12,23 @@
   <div class="gameboard">
     <div class="scoreboard">
       <span>
-        <p class="p1-marker">P1:</p>
+        <p class="p1-marker highlight">X</p>
         <span class="score">
           <p class="p1-score">0</p>
           <p>:</p>
           <p class="p2-score">0</p>
         </span>
-        <p class="p2-marker">P2:</p>
+        <p class="p2-marker">O</p>
       </span>
     </div>
     <div class="grid"></div>
     <div class="options">
-      <form action="" method="post">
+      <form action="" method="post" autocomplete="off">
         <div>
-          <output class="grid-dimension-output" for="total-cells"></output>
-          <label for="total-cells">grid</label>
+          <span>
+            <output class="grid-dimension-output" for="total-cells"></output>
+            <label for="total-cells">grid</label>
+          </span>
           <input type="range" name="total-cells" id="total-cells" list="tick-marks" min="3" max="9" value="3">
           <datalist id="tick-marks">
             <option value="3"></option>
@@ -41,16 +43,34 @@
           <button type="button" class="reset">reset</button>
         </div>
         <div class="compete-option">
-          <p>Mode:</p>
-            <input type="radio" name="compete-mode" id="compete-vs-computer" checked>
-            <label for="compete-mode">vs computer</label>
+          <p>Play against:</p>
+          <span>
+            <input type="radio" name="compete-mode" id="compete-vs-dummy" checked>
+            <label for="compete-vs-dummy" class="label-button">dummy</label>
+          </span>
+          <span>
             <input type="radio" name="compete-mode" id="compete-vs-player">
-            <label for="compete-mode">2 players</label>
+            <label for="compete-vs-player" class="label-button">player 2</label>
+          </span>
+          <span>
+            <input type="radio" name="compete-mode" id="compete-vs-bot" disabled>
+            <label style="color: gray" for="compete-vs-bot" class="label-button" title="not yet available">bot</label>
+          </span>
+        </div>
+        <div>
+          <label for="p1-name">Player 1 name:</label>
+          <input type="text" id="p1-name" name="p1-name">
+        </div>
+        <div>
+          <label for="p2-name">Player 2 name:</label>
+          <input type="text" id="p2-name" name="p2-name">
         </div>
       </form>
     </div>
   </div>
   
+
+
 </body>
 <script src="./program/tic-tac-toe.js" defer></script>
 </html>

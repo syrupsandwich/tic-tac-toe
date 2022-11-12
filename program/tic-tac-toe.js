@@ -49,7 +49,9 @@ const gameboard = (() => {
     }
 
   };
+
   resetGrid();
+
   let gameOver = false;
   
   const highlightPattern = (cells) => {
@@ -96,6 +98,7 @@ const gameboard = (() => {
     };
   };
 
+  
   const markCell = (id, marker) => {
     if(gameOver){ return };
     allCells[id].textContent = marker;
@@ -103,11 +106,13 @@ const gameboard = (() => {
     checkPatterns('data-column', id, marker);
     checkPatterns('data-diagonal1', id, marker);
     checkPatterns('data-diagonal2', id, marker);
+    lastMark = marker;
   };
   
   const p1Label = document.querySelector('.p1-marker');
   const p2Label = document.querySelector('.p2-marker');
-
+  let lastMark;
+  
   const endTurn = () => {
     if(player2.automated){
     let options = [];
@@ -116,13 +121,12 @@ const gameboard = (() => {
         options.push(cell.id) }
       });
     player2.move(options);
+      lastMark = player2.marker;
     } else {
-      if(nextMarkToPlay === player1.marker){
-        nextMarkToPlay = player2.marker;
+      if(lastMark === player1.marker){
         p2Label.classList.add('highlight');
         p1Label.classList.remove('highlight');
-      } else if(nextMarkToPlay === player2.marker){
-        nextMarkToPlay = player1.marker;
+      } else if(lastMark === player2.marker){
         p1Label.classList.add('highlight');
         p2Label.classList.remove('highlight');
       };
@@ -132,13 +136,36 @@ const gameboard = (() => {
   const rangeInput = document.querySelector('input');
   const output = document.querySelector('output');
   const resetBtn = document.querySelector('.reset');
-  const playVsComInput = document.querySelector('#compete-vs-computer');
+  const playVsDummyInput = document.querySelector('#compete-vs-dummy');
   const playVsP2Input = document.querySelector('#compete-vs-player');
+  const p1NameInput = document.querySelector('#p1-name');
+  const p2NameInput = document.querySelector('#p2-name');
 
   resetBtn.addEventListener('click', function(){
     resetGrid(output.value.charAt(0));
-    if(playVsComInput.checked){ player2.automated = true };
-    if(playVsP2Input.checked){ player2.automated = false };
+    if(p1NameInput.value !== ''){
+      p1Label.textContent = p1NameInput.value;
+      sessionStorage.player1Marker = p1NameInput.value;
+      player1.marker = p1NameInput.value.charAt(0).toUpperCase();
+      lastMark = player2.marker;
+    };
+    if(p2NameInput.value !== ''){
+      p2Label.textContent = p2NameInput.value;
+      sessionStorage.player2Marker = p2NameInput.value;
+      player2.marker = p2NameInput.value.charAt(0).toUpperCase();
+      lastMark = player2.marker;
+    };
+    if(playVsDummyInput.checked){
+      player2.automated = true;
+      singlePlayer = true;
+      p1Label.classList.add('highlight');
+      p2Label.classList.remove('highlight');;
+    };
+    if(playVsP2Input.checked){
+      player2.automated = false;
+      if (singlePlayer === true){ lastMark = player2.marker };
+      singlePlayer = false;
+    };
     gameOver = false;
   });
 
@@ -152,21 +179,28 @@ const gameboard = (() => {
 
   document.addEventListener('DOMContentLoaded', function(){
     setDefaultState();
+    lastMark = player2.marker;
   });
 
-  let nextMarkToPlay = sessionStorage.player1Marker;
+  let singlePlayer = true;
+
+  const getNextMark = () => {
+    if(singlePlayer){ return player1.marker };
+    if(lastMark === player1.marker){ return player2.marker };
+    if(lastMark === player2.marker){ return player1.marker };
+  }
 
   grid.addEventListener('click', (e) => {
     if(e.target.parentNode !== gameboard.grid){ return };
     if(e.target.textContent !== ''){ return };
-    gameboard.markCell(e.target.id, nextMarkToPlay);
+    gameboard.markCell(e.target.id, getNextMark());
     gameboard.endTurn();
   });
 
-  return { grid, markCell, endTurn};
+  return { grid, markCell, endTurn, p1Label, p2Label };
 })();
 
-const player = (mark, automated = false) => {
+const player = (mark , automated = false) => {
 
   let marker = mark.charAt(0);
   let score = 0;
@@ -189,13 +223,13 @@ const player = (mark, automated = false) => {
 };
 
 if(!sessionStorage.player1Marker){
-sessionStorage.setItem('player1Marker', prompt('Player 1, input your marker.', 'x').toUpperCase());
+sessionStorage.setItem('player1Marker', 'X');
 }
-document.querySelector('.p1-marker').textContent = sessionStorage.player1Marker;
+gameboard.p1Label.textContent = sessionStorage.player1Marker;
 const player1 = player(sessionStorage.player1Marker);
 
 if(!sessionStorage.player2Marker){
-  sessionStorage.setItem('player2Marker', prompt('Player 2, input your marker.', 'o').toUpperCase());
+  sessionStorage.setItem('player2Marker', 'O');
 }
-document.querySelector('.p2-marker').textContent = sessionStorage.player2Marker;
+gameboard.p2Label.textContent = sessionStorage.player2Marker;
 const player2 = player(sessionStorage.player2Marker, true);
