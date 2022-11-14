@@ -215,7 +215,7 @@ const gameboard = (() => {
 
 const player = (mark , automated = false) => {
 
-  let marker = mark.charAt(0);
+  let marker = mark.charAt(0).toUpperCase();
   let score = 0;
 
   const getScore = () => { return score };
