@@ -11,6 +11,13 @@ body{
   background: var(--gameboard-background);
 }
 
+.announcement{
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  grid-area: 1 / 2 / 2 / 3;
+}
+
 .scoreboard{
   width: 100%;
 }
@@ -76,7 +83,6 @@ button{
 form{
   display: flex;
   flex-direction: column;
-  gap: 1px;
 }
 
 input[type='text']{

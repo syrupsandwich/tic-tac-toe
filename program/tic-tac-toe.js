@@ -133,6 +133,13 @@ const gameboard = (() => {
     }
   }
 
+  const patternDisplay = document.querySelector('.pattern');
+  
+  const updatePatternRequirement = (number) => {
+    winningNumber = number;
+    patternDisplay.textContent = number;
+  }
+
   const rangeInput = document.querySelector('input');
   const output = document.querySelector('output');
   const resetBtn = document.querySelector('.reset');
@@ -143,6 +150,8 @@ const gameboard = (() => {
 
   resetBtn.addEventListener('click', function(){
     resetGrid(output.value.charAt(0));
+    if(requiredCells > 9){ updatePatternRequirement(4) };
+    if(requiredCells === 9){ updatePatternRequirement(3) };
     if(p1NameInput.value !== ''){
       p1Label.textContent = p1NameInput.value;
       sessionStorage.player1Marker = p1NameInput.value;
