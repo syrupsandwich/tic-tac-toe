@@ -157,17 +157,30 @@ const gameboard = (() => {
     };
     if(playVsDummyInput.checked){
       player2.automated = true;
+      if(!singlePlayer){
+      resetScore();
+      };
       singlePlayer = true;
       p1Label.classList.add('highlight');
-      p2Label.classList.remove('highlight');;
+      p2Label.classList.remove('highlight');
     };
     if(playVsP2Input.checked){
       player2.automated = false;
-      if (singlePlayer === true){ lastMark = player2.marker };
+      if(singlePlayer){
+        lastMark = player2.marker;
+        resetScore();
+      };
       singlePlayer = false;
     };
     gameOver = false;
   });
+
+  const resetScore = () => {
+    p1Score.textContent = '0';
+    player1.resetScore();
+    p2Score.textContent = '0';
+    player2.resetScore();
+  };
 
   function setDefaultState(){
     output.value = `${rangeInput.value} * ${rangeInput.value}`;
@@ -209,6 +222,10 @@ const player = (mark , automated = false) => {
 
   const point = () => { score++ };
 
+  const resetScore = () => {
+    score = 0;
+  };
+
   if(automated){
     const getRandomInt = (max) => { return Math.floor(Math.random() * max) };
     const move = (options) => {
@@ -216,10 +233,10 @@ const player = (mark , automated = false) => {
       let randomId = getRandomInt(options.length);
       gameboard.markCell(options[randomId], player2.marker);
     }
-    return { marker, point, move, automated, getScore };
+    return { marker, point, move, automated, getScore, resetScore };
   }
 
-  return { marker, point, getScore };
+  return { marker, point, getScore, resetScore };
 };
 
 if(!sessionStorage.player1Marker){
