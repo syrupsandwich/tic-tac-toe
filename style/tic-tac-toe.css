@@ -11,13 +11,6 @@ body{
   background: var(--gameboard-background);
 }
 
-.announcement{
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  grid-area: 1 / 2 / 2 / 3;
-}
-
 .scoreboard{
   width: 100%;
 }
@@ -62,10 +55,17 @@ div.grid{
 }
 
 .options{
-  --opt-box-width: 400px;
-  width: var(--opt-box-width);
+  width: 400px;
   color: lavender;
   padding: 8px;
+}
+
+.announcement{
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  border-bottom: 1px solid gray;
+  padding: 0 0 18px 0;
 }
 
 input{
