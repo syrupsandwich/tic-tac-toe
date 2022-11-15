@@ -6,6 +6,8 @@ const gameboard = (() => {
     allCells.push(document.createElement('div'));
   }
 
+  let requiredCells;
+
   const resetGrid = (dimension = 3) => {
     grid.style.setProperty('--grid-dimension', dimension);
 
@@ -39,6 +41,7 @@ const gameboard = (() => {
     };
 
     requiredCells = (dimension * dimension);
+
     for(let i = 0; i < requiredCells; ++i){
       allCells[i].id = i;
       assignRowNumber(i);
@@ -46,7 +49,7 @@ const gameboard = (() => {
       assignDiagonal1(i);
       assignDiagonal2(i);
       grid.appendChild(allCells[i]);
-    }
+    };
 
   };
 
@@ -64,18 +67,18 @@ const gameboard = (() => {
     let group = allCells[id].getAttribute(`${attribute}`);
     let attributeSelection = `[${attribute}='${group}']`;
     let cells = Array.from(document.querySelectorAll(attributeSelection));
-    let points = 0;
+    let sum = 0;
     let pattern = [];
     cells.forEach((cell) => {
       if(cell.textContent === marker){ 
-        points++;
+        sum++;
         pattern.push(cell);
       };
       if(cell.textContent !== marker || cell.className === 'highlight-row'){
-        points = 0;
+        sum = 0;
         pattern = [];
       };
-      if(points === winningNumber){ 
+      if(sum === winningNumber){
         highlightPattern(pattern);
         rewardPlayer(marker);
         gameOver = true;
@@ -98,6 +101,20 @@ const gameboard = (() => {
     };
   };
 
+  const announcement = document.querySelector('.announcement');
+  const requirements = announcement.children[0];
+
+  const checkForTie = () => {
+    if(gameOver){ return };
+    for(i = 0; i < requiredCells; i++){
+      if(allCells[i].textContent === ''){ return };
+    };
+    if(!gameOver){
+      gameOver = true;
+      requirements.remove();
+      announcement.textContent = 'Its a tie';
+    };
+  };
   
   const markCell = (id, marker) => {
     if(gameOver){ return };
@@ -106,6 +123,7 @@ const gameboard = (() => {
     checkPatterns('data-column', id, marker);
     checkPatterns('data-diagonal1', id, marker);
     checkPatterns('data-diagonal2', id, marker);
+    checkForTie();
     lastMark = marker;
   };
   
@@ -180,6 +198,10 @@ const gameboard = (() => {
         resetScore();
       };
       singlePlayer = false;
+    };
+    if(announcement.children[0] !== requirements){
+      announcement.textContent = '';
+      announcement.appendChild(requirements);
     };
     gameOver = false;
   });
