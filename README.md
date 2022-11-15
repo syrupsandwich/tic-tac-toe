@@ -1,4 +1,14 @@
-# same old tic-tac-toe
+# tic-tac-toe
+This is an assignment for [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-tic-tac-toe).
+
 The main goal is to have as little global code as possible.
 
-This is an assignment for [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-tic-tac-toe).
+Play against 'dummy' or a local player.
+
+If there is a draw, the player that started the last round will go second.
+
+You can change the dimensions of the grid using the slider. 
+
+A grid size larger than 3x3 will require a match of 4 in a row.
+
+There will be an ai bot in a future update.
