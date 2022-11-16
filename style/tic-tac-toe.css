@@ -1,7 +1,7 @@
 body{
   margin: 0;
   display: grid;
-  grid-template: 40px auto 1fr / 1fr auto 1fr;
+  grid-template: 40px auto auto 1fr / 1fr auto 1fr;
   height: 100vh;
   background-color: hsl(0, 0%, 10%);
   color: white;
@@ -135,4 +135,28 @@ span>*{
 .highlight{
   text-shadow: 0 0 4px white;
   font-weight: 900;
+}
+
+footer{
+  grid-area: 3 / 2 / 4 / 3;
+  margin-top: 50px;
+  padding: 40px 0 50px;
+  border-top: 1px solid gray ;
+  color: lavender;
+}
+
+footer>div{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.github-mark{
+  height: 38px;
+  margin-top: -8px;
+}
+
+footer a{
+  color: lavender;
+  text-decoration-line: none;
 }
